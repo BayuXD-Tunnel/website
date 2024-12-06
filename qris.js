@@ -25,11 +25,11 @@ function convertCRC16(str) {
     return hex;
 }
 
-function transactionId() {
+function generateTransactionId() {
     return Math.random().toString(36).substring(2, 10);
 }
 
-function experiationTime() {
+function generateExpirationTime() {
     const expirationTime = new Date();
     expirationTime.setMinutes(expirationTime.getMinutes() + 30);
     return expirationTime;
