@@ -35,6 +35,9 @@ function generateExpirationTime() {
     return expirationTime;
 }
 
+const waktuqris = generateExpirationTime()
+const idtransaksi = generateTransactionId()
+
 async function elxyzFile(Path) {
     return new Promise(async (resolve, reject) => {
         if (!fs.existsSync(Path)) return reject(new Error("File not Found"));
