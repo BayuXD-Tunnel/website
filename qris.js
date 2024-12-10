@@ -31,7 +31,7 @@ function generateTransactionId() {
 
 function generateExpirationTime() {
     const expirationTime = new Date();
-    expirationTime.setMinutes(expirationTime.getMinutes() + 30);
+    expirationTime.setMinutes(expirationTime.getMinutes() + 5);
     return expirationTime;
 }
 
