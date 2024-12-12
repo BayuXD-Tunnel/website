@@ -114,9 +114,20 @@ app.get('/paydisini/cancel-payment', async (req, res) => {
   }
 });
 
-app.get('/orkut/createpayment', async (req, res) => {
+const API_KEY = 'KontolPremium'; // Ganti ini dengan API key sebenarnya
+
+app.get('/api/orkut/createpayment', async (req, res) => {
     try {
-        const { amount, codeqr } = req.query;
+        const { apikey, amount, codeqr } = req.query;
+
+        // Validasi API Key
+        if (apikey !== API_KEY) {
+            return res.status(403).json({
+                success: false,
+                message: 'Invalid API Key'
+            });
+        }
+
         const qrisData = await createQRIS(amount, codeqr);
         res.json({
             success: true,
@@ -131,16 +142,26 @@ app.get('/orkut/createpayment', async (req, res) => {
     }
 });
 
-app.get('/orkut/checkpayment', async (req, res) => {
-	const { merchant } = req.query;
-        if (!merchant) {
-        return res.json("Isi Parameter Merchant.");
-        }
-        const { token } = req.query;
-       if (!token) {
-       return res.json("Isi Parameter Token menggunakan token kalian.")
-       }
-   try {
+app.get('/api/orkut/checkpayment', async (req, res) => {
+    const { apikey, merchant, token } = req.query;
+
+    // Validasi API Key
+    if (apikey !== API_KEY) {
+        return res.status(403).json({
+            success: false,
+            message: 'Invalid API Key'
+        });
+    }
+
+    // Validasi Parameter Merchant dan Token
+    if (!merchant) {
+        return res.json('Isi Parameter Merchant.');
+    }
+    if (!token) {
+        return res.json('Isi Parameter Token menggunakan token kalian.');
+    }
+
+    try {
         const apiUrl = `https://gateway.okeconnect.com/api/mutasi/qris/${merchant}/${token}`;
         const response = await axios.get(apiUrl);
         const result = response.data;
